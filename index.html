@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/css" media="all">
+      @import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap");
+
+      .font-lexend-deca {
+        font-family: "Lexend Deca", serif;
+      }
+      .title {
+        font-family: "Lexend Deca", serif;
+        font-weight: 900;
+        font-size: 1.9rem;
+      }
+      .grid-song {
+        grid-template-columns: 55px 200px 1fr;
+        box-shadow: 1px 2px 4px 2px #959595;
+        max-width: 320px;
+        border-radius: 15px;
+      }
+      .font-gabarito {
+        font-family: "Gabarito", serif;
+      }
+      .notifications {
+        position: absolute;
+        background: darkred;
+        color: #fff;
+        width: 15px;
+        height: 15px;
+        border-radius: 10px;
+        margin: 0px 0px 0px 0px;
+        z-index: 99;
+        text-align: center;
+        font-size: 10px;
+      }
+      .music-card {
+        display: grid;
+        place-items: center;
+        position: relative;
+        width: 250px;
+        height: 250px;
+      }
+
+      .progress-ring {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        background: conic-gradient(
+          #e36154 0%,
+          #e36154 25%,
+          transparent 25%,
+          transparent 100%
+        );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .artist-image {
+        width: 90%;
+        height: 90%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid grey;
+      }
+
+      .play-button {
+        position: absolute;
+        bottom: 10%;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background-color: #e36154;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      main {
+        margin: 0 auto;
+      }
+      .grid-card-width {
+        width: calc(28.33% - 30px);
+        box-shadow: 1px 2px 4px 2px #959595;
+      }
+      .music_wave {
+        width: 100%;
+        height: 50px;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-betwee;
+      }
+      .music_wave .wave {
+        width: 5px;
+        height: 30px;
+        border-radius: 5px;
+        animation: musicwave 1.5s ease-in-out infinite;
+      }
+      @keyframes musicwave {
+        0%,
+        100% {
+          transform: scaleY(0.1);
+        }
+        50% {
+          transform: scaleY(1);
+        }
+      }
+      .music_wave .wave:nth-child(1) {
+        background-color: #641e1e;
+        animation-delay: 0.9s;
+      }
+      .music_wave .wave:nth-child(2) {
+        background-color: #c54848;
+        animation-delay: 0.7s;
+      }
+      .music_wave .wave:nth-child(3) {
+        background-color: #641e1e;
+        animation-delay: 0.6s;
+      }
+      .music_wave .wave:nth-child(4) {
+        background-color: #c54848;
+        animation-delay: 0.4s;
+      }
+      .music_wave .wave:nth-child(5) {
+        background-color: #741a1a;
+        animation-delay: 0.2s;
+      }
+      .music_wave .wave:nth-child(6) {
+        background-color: #d33d3d;
+        animation-delay: 0.2s;
+      }
+      .music_wave .wave:nth-child(7) {
+        background-color: #7d0808;
+        animation-delay: 0.4s;
+      }
+      .music_wave .wave:nth-child(8) {
+        background-color: #d14444;
+        animation-delay: 0.5s;
+      }
+      .music_wave .wave:nth-child(9) {
+        background-color: #a90c0c;
+        animation-delay: 0.7s;
+      }
+      .music_wave .wave:nth-child(10) {
+        background-color: #fd2929;
+        animation-delay: 0.9s;
+      }
+      .btn-play {
+        background-color: #e36154;
+        border-radius: 50%;
+      }
+      @media screen and (max-width: 768px) {
+        .grid-card-width {
+          width: 45%;
+        }
+      }
+      @media screen and (max-width: 680px) {
+        .grid-card-width {
+          width: 82%;
+        }
+      }
+      .scrollbar {
+        overflow-x: hidden;
+        overflow-y: scroll;
+      }
+      .scrollbar::-webkit-scrollbar {
+        width: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Track */
+      .scrollbar::-webkit-scrollbar-track {
+        background: #e1e1e1;
+      }
+
+      /* Handle */
+      .scrollbar::-webkit-scrollbar-thumb {
+        background: #5e5e5e;
+        border-radius: 20px;
+      }
+
+      /* Handle on hover */
+      .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="w-full flex bg-white shadow-lg">
+      <a
+        href="/"
+        style="font-family: 'Gabarito', serif"
+        class="font-bold text-4xl w-28 lg:w-56 flex-auto self-start"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Stereo
+      </a>
+      <div class="self-end w-80">
+        <ul class="flex flex-row">
+          <li class="m-2">
+            <a href="#settings"
+              ><img
+                src="./images/settings-svgrepo-com.svg"
+                width="30"
+                height="30"
+                alt="Settings"
+            /></a>
+          </li>
+          <li class="m-2">
+            <a href="#notifications">
+              <span class="notifications">4</span
+              ><img
+                src="./images/notifications-outline-svgrepo-com.svg"
+                width="30"
+                height="30"
+                alt="Notifications"
+              />
+            </a>
+          </li>
+          <li class="m-2">
+            <a href="#my-profile" class="flex flex-row">
+              <span class="m-1">leonardoaranibar</span>
+              <img
+                src="./images/my-profile.jpg"
+                width="30"
+                height="30"
+                alt="My Profile"
+                class="rounded-2xl"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <main class="w-full flex flex-wrap max-w-[1024px]">
+      <nav class="flex-initial w-1/2 sm:w-1/2 lg:w-fit h-60">
+        <ul class="mt-6 pl-6 md:pl-2 lg:pl-1">
+          <li>
+            <a href="/cards.html" target="_blank" class="flex"
+              ><svg
+                width="30px"
+                height="30px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="mr-2"
+              >
+                <path
+                  d="M9.73319 10.4608C9.82276 10.1025 10.1025 9.82273 10.4608 9.73315L13.9187 8.86869C14.651 8.68559 15.3144 9.34899 15.1313 10.0814L14.2669 13.5392C14.1773 13.8975 13.8975 14.1773 13.5393 14.2668L10.0814 15.1313C9.34902 15.3144 8.68562 14.651 8.86872 13.9186L9.73319 10.4608Z"
+                  stroke="#e36154"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 3.5C5.5 3.5 3.5 5.5 3.5 12C3.5 18.5 5.5 20.5 12 20.5C18.5 20.5 20.5 18.5 20.5 12C20.5 5.5 18.5 3.5 12 3.5Z"
+                  stroke="#e36154"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                /></svg
+              >Explore</a
+            >
+          </li>
+          <li>
+            <a href="/grid-gallery.html" target="_blank" class="flex">
+              <svg
+                fill="#000000"
+                width="30px"
+                height="30px"
+                viewBox="0 0 32.001 32.001"
+                xmlns="http://www.w3.org/2000/svg"
+                class="mr-2"
+              >
+                <g
+                  id="Group_5"
+                  data-name="Group 5"
+                  transform="translate(-670.002 -465.694)"
+                >
+                  <circle
+                    id="Ellipse_4"
+                    data-name="Ellipse 4"
+                    cx="6"
+                    cy="6"
+                    r="6"
+                    transform="translate(670.002 485.695)"
+                  />
+                  <circle
+                    id="Ellipse_5"
+                    data-name="Ellipse 5"
+                    cx="5"
+                    cy="5"
+                    r="5"
+                    transform="translate(692.002 483.695)"
+                  />
+                  <rect
+                    id="Rectangle_65"
+                    data-name="Rectangle 65"
+                    width="4"
+                    height="15.998"
+                    transform="translate(670.002 474.696)"
+                  />
+                  <rect
+                    id="Rectangle_66"
+                    data-name="Rectangle 66"
+                    width="4"
+                    height="15.998"
+                    transform="translate(692.002 472.696)"
+                  />
+                  <path
+                    id="Path_396"
+                    data-name="Path 396"
+                    d="M692,465.694l-18,2a4,4,0,0,0-4,4v4a4,4,0,0,0,4,4l18-2a4,4,0,0,0,4-4v-4A4,4,0,0,0,692,465.694Zm0,8-18,2v-4l18-2Z"
+                  />
+                </g>
+              </svg>
+              Songs</a
+            >
+          </li>
+          <li>
+            <a href="/services.html" target="_blank" class="flex">
+              <svg
+                width="30px"
+                height="30px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="mr-2"
+              >
+                <g clip-path="url(#clip0_429_11111)">
+                  <circle
+                    cx="12"
+                    cy="7"
+                    r="3"
+                    stroke="#292929"
+                    stroke-width="2.5"
+                  />
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="2"
+                    stroke="#292929"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12.3414 20H6C4.89543 20 4 19.1046 4 18C4 15.7909 5.79086 14 8 14H13.5278"
+                    stroke="#292929"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20 18V11L22 13"
+                    stroke="#292929"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_429_11111">
+                    <rect width="24" height="24" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              Artists</a
+            >
+          </li>
+          <li>
+            <a href="/reto-grid-gallery.html" target="_blank" class="flex">
+              <svg
+                version="1.1"
+                id="_x32_"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="30px"
+                height="30px"
+                viewBox="0 0 512 512"
+                class="mr-2"
+              >
+                <g>
+                  <path
+                    class="st0"
+                    fill="#000000"
+                    d="M256,0C114.609,0,0,114.625,0,256s114.609,256,256,256s256-114.625,256-256S397.391,0,256,0z M96.469,149.891
+		l-1.438,2.172l-20.469-13.625l1.453-2.188C108.594,87.375,160.344,53.469,218,43.219l2.578-0.453l4.313,24.203l-2.578,0.438
+		C171.219,76.484,125.359,106.547,96.469,149.891z M145.781,186.688l-20.719-13.953l1.813-2.703
+		c23.438-34.828,60.484-59.313,101.625-67.156l3.203-0.641l4.672,24.547l-3.188,0.594c-34.641,6.656-65.828,27.266-85.594,56.594
+		L145.781,186.688z M159.578,256c0-53.25,43.172-96.406,96.422-96.422c53.25,0.016,96.406,43.172,96.406,96.422
+		S309.25,352.406,256,352.406S159.578,309.25,159.578,256z M280.938,415.25l-4.031-24.656l3.234-0.531
+		c36.609-5.969,69.359-27.203,89.813-58.188l1.797-2.719l20.875,13.719l-1.813,2.75c-24.266,36.781-63.141,61.969-106.656,69.094
+		L280.938,415.25z M436,375.734c-32.594,48.891-84.344,82.813-142.016,93.063l-2.578,0.438l-4.281-24.203l2.563-0.453
+		c51.063-9.047,96.953-39.109,125.844-82.484l1.438-2.188l20.469,13.656L436,375.734z"
+                  />
+                  <path
+                    class="st0"
+                    d="M308.359,203.641c-13.422-13.422-31.891-21.672-52.359-21.688c-20.453,0-38.922,8.266-52.344,21.688
+		S181.969,235.531,181.969,256s8.266,38.938,21.688,52.359s31.891,21.672,52.344,21.688c20.469-0.016,38.938-8.266,52.359-21.688
+		c13.391-13.422,21.672-31.891,21.672-52.359S321.75,217.063,308.359,203.641z M256,295.391c-21.75,0-39.375-17.641-39.375-39.391
+		S234.25,216.625,256,216.625S295.375,234.25,295.375,256S277.75,295.391,256,295.391z"
+                  />
+                </g></svg
+              >Albums</a
+            >
+          </li>
+          <li>
+            <a href="#playlists" class="flex">
+              <svg
+                width="30px"
+                height="30px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="mr-2"
+              >
+                <path
+                  d="M9.772 4.28c.56-.144 1.097.246 1.206.814.1.517-.263 1.004-.771 1.14A7 7 0 1 0 19 12.9c.009-.5.4-.945.895-1 .603-.067 1.112.371 1.106.977L21 13c0 .107-.002.213-.006.32a.898.898 0 0 1 0 .164l-.008.122a9 9 0 0 1-9.172 8.392A9 9 0 0 1 9.772 4.28z"
+                  fill="#000000"
+                />
+                <path
+                  d="M15.93 13.753a4.001 4.001 0 1 1-6.758-3.581A4 4 0 0 1 12 9c.75 0 1.3.16 2 .53 0 0 .15.09.25.17-.1-.35-.228-1.296-.25-1.7a58.75 58.75 0 0 1-.025-2.035V2.96c0-.52.432-.94.965-.94.103 0 .206.016.305.048l4.572 1.689c.446.145.597.23.745.353.148.122.258.27.33.446.073.176.108.342.108.801v1.16c0 .518-.443.94-.975.94a.987.987 0 0 1-.305-.049l-1.379-.447-.151-.05c-.437-.14-.618-.2-.788-.26a5.697 5.697 0 0 1-.514-.207 3.53 3.53 0 0 1-.213-.107c-.098-.05-.237-.124-.521-.263L16 6l.011 7c0 .255-.028.507-.082.753h.001z"
+                  fill="#000000"
+                />
+              </svg>
+              Playlists</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <article class="pl-5 flex-initial w-1/2 sm:w-1/2 lg:w-1/5 h-60">
+        <div class="grid grid-cols-1">
+          <h1 class="title max-w-36 mt-5">Blinding Lights</h1>
+          <h2 class="font-gabarito">The Weekend</h2>
+          <p>
+            My music is forever. Maybe I can say that I am deluded, but my music
+            is forever.
+          </p>
+        </div>
+      </article>
+      <article class="flex-initial w-full sm:w-1/2 lg:w-2/5 h-60">
+        <div class="music-card grid justify-center w-full mt-5">
+          <div class="progress-ring">
+            <img
+              src="./images/my-profile.jpg"
+              alt="Artist"
+              class="artist-image"
+            />
+            <button class="play-button">
+              <svg
+                width="20px"
+                height="20px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z"
+                  fill="#FFF"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </article>
+      <section
+        class="grid justify-center flex-auto w-full sm:w-1/2 lg:w-1/6 h-auto max-h-72"
+      >
+        <h1 class="title mt-5 sticky">Favorites Songs</h1>
+        <aside
+          class="grid grid-cols-1 auto-cols-min gap-3 scrollbar"
+          style="border-color: transparent"
+        >
+          <div class="grid w-full h-12 grid-song grid-rows-2">
+            <img
+              src="./images/coldplay_viva_la_vida.jpeg"
+              alt="Coldplay - Viva la vida"
+              class="rounded-full w-[40px] h-[40px]"
+            />
+            <h2 class="font-gabarito font-bold grid justify-start pl-3">
+              Vivir la vida
+            </h2>
+            <h3
+              class="grid col-start-2 leading-4 row-start-2 justify-start pl-3"
+            >
+              Coldplay
+            </h3>
+            <button class="grid col-start-3">
+              <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12ZM12 6.25C12.4142 6.25 12.75 6.58579 12.75 7V12.1893L14.4697 10.4697C14.7626 10.1768 15.2374 10.1768 15.5303 10.4697C15.8232 10.7626 15.8232 11.2374 15.5303 11.5303L12.5303 14.5303C12.3897 14.671 12.1989 14.75 12 14.75C11.8011 14.75 11.6103 14.671 11.4697 14.5303L8.46967 11.5303C8.17678 11.2374 8.17678 10.7626 8.46967 10.4697C8.76256 10.1768 9.23744 10.1768 9.53033 10.4697L11.25 12.1893V7C11.25 6.58579 11.5858 6.25 12 6.25ZM8 16.25C7.58579 16.25 7.25 16.5858 7.25 17C7.25 17.4142 7.58579 17.75 8 17.75H16C16.4142 17.75 16.75 17.4142 16.75 17C16.75 16.5858 16.4142 16.25 16 16.25H8Z"
+                  fill="#1C274C"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="grid w-full h-12 grid-song grid-rows-2">
+            <img
+              src="./images/damian_marley_welcome_to_jamrock.jpeg"
+              alt="Welcome to Jamrock"
+              class="rounded-full w-[40px] h-[40px]"
+            />
+            <h2 class="font-gabarito font-bold grid justify-start pl-3">
+              Welcome to Jamrock
+            </h2>
+            <h3
+              class="grid col-start-2 leading-4 row-start-2 justify-start pl-3"
+            >
+              Damian Marley
+            </h3>
+            <button class="grid col-start-3">
+              <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12ZM12 6.25C12.4142 6.25 12.75 6.58579 12.75 7V12.1893L14.4697 10.4697C14.7626 10.1768 15.2374 10.1768 15.5303 10.4697C15.8232 10.7626 15.8232 11.2374 15.5303 11.5303L12.5303 14.5303C12.3897 14.671 12.1989 14.75 12 14.75C11.8011 14.75 11.6103 14.671 11.4697 14.5303L8.46967 11.5303C8.17678 11.2374 8.17678 10.7626 8.46967 10.4697C8.76256 10.1768 9.23744 10.1768 9.53033 10.4697L11.25 12.1893V7C11.25 6.58579 11.5858 6.25 12 6.25ZM8 16.25C7.58579 16.25 7.25 16.5858 7.25 17C7.25 17.4142 7.58579 17.75 8 17.75H16C16.4142 17.75 16.75 17.4142 16.75 17C16.75 16.5858 16.4142 16.25 16 16.25H8Z"
+                  fill="#1C274C"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="grid w-full h-12 grid-song grid-rows-2">
+            <img
+              src="./images/Metallica_One_cover.jpg"
+              alt="Metallica - One"
+              class="rounded-full w-[40px] h-[40px]"
+            />
+            <h2 class="font-gabarito font-bold grid justify-start pl-3">One</h2>
+            <h3
+              class="grid col-start-2 leading-4 row-start-2 justify-start pl-3"
+            >
+              Metallica
+            </h3>
+            <button class="grid col-start-3">
+              <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12ZM12 6.25C12.4142 6.25 12.75 6.58579 12.75 7V12.1893L14.4697 10.4697C14.7626 10.1768 15.2374 10.1768 15.5303 10.4697C15.8232 10.7626 15.8232 11.2374 15.5303 11.5303L12.5303 14.5303C12.3897 14.671 12.1989 14.75 12 14.75C11.8011 14.75 11.6103 14.671 11.4697 14.5303L8.46967 11.5303C8.17678 11.2374 8.17678 10.7626 8.46967 10.4697C8.76256 10.1768 9.23744 10.1768 9.53033 10.4697L11.25 12.1893V7C11.25 6.58579 11.5858 6.25 12 6.25ZM8 16.25C7.58579 16.25 7.25 16.5858 7.25 17C7.25 17.4142 7.58579 17.75 8 17.75H16C16.4142 17.75 16.75 17.4142 16.75 17C16.75 16.5858 16.4142 16.25 16 16.25H8Z"
+                  fill="#1C274C"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="grid w-full h-12 grid-song grid-rows-2">
+            <img
+              src="./images/tierra-santa-hasta-el-amanecer.jpg"
+              alt="Tierra Santa - Hasta el amanecer"
+              class="rounded-full w-[40px] h-[40px]"
+            />
+            <h2 class="font-gabarito font-bold grid justify-start pl-3">
+              Hasta el amanecer
+            </h2>
+            <h3
+              class="grid col-start-2 leading-4 row-start-2 justify-start pl-3"
+            >
+              Tierra Santa
+            </h3>
+            <button class="grid col-start-3">
+              <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12ZM12 6.25C12.4142 6.25 12.75 6.58579 12.75 7V12.1893L14.4697 10.4697C14.7626 10.1768 15.2374 10.1768 15.5303 10.4697C15.8232 10.7626 15.8232 11.2374 15.5303 11.5303L12.5303 14.5303C12.3897 14.671 12.1989 14.75 12 14.75C11.8011 14.75 11.6103 14.671 11.4697 14.5303L8.46967 11.5303C8.17678 11.2374 8.17678 10.7626 8.46967 10.4697C8.76256 10.1768 9.23744 10.1768 9.53033 10.4697L11.25 12.1893V7C11.25 6.58579 11.5858 6.25 12 6.25ZM8 16.25C7.58579 16.25 7.25 16.5858 7.25 17C7.25 17.4142 7.58579 17.75 8 17.75H16C16.4142 17.75 16.75 17.4142 16.75 17C16.75 16.5858 16.4142 16.25 16 16.25H8Z"
+                  fill="#1C274C"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="grid w-full h-12 grid-song grid-rows-2">
+            <img
+              src="./images/SOJA_Rest_of_my_life.jpg"
+              alt="SOJA - Rest of my life"
+              class="rounded-full w-[40px] h-[40px]"
+            />
+            <h2 class="font-gabarito font-bold grid justify-start pl-3">
+              Rest of my Life
+            </h2>
+            <h3
+              class="grid col-start-2 leading-4 row-start-2 justify-start pl-3"
+            >
+              SOJA
+            </h3>
+            <button class="grid col-start-3">
+              <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12ZM12 6.25C12.4142 6.25 12.75 6.58579 12.75 7V12.1893L14.4697 10.4697C14.7626 10.1768 15.2374 10.1768 15.5303 10.4697C15.8232 10.7626 15.8232 11.2374 15.5303 11.5303L12.5303 14.5303C12.3897 14.671 12.1989 14.75 12 14.75C11.8011 14.75 11.6103 14.671 11.4697 14.5303L8.46967 11.5303C8.17678 11.2374 8.17678 10.7626 8.46967 10.4697C8.76256 10.1768 9.23744 10.1768 9.53033 10.4697L11.25 12.1893V7C11.25 6.58579 11.5858 6.25 12 6.25ZM8 16.25C7.58579 16.25 7.25 16.5858 7.25 17C7.25 17.4142 7.58579 17.75 8 17.75H16C16.4142 17.75 16.75 17.4142 16.75 17C16.75 16.5858 16.4142 16.25 16 16.25H8Z"
+                  fill="#1C274C"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="grid w-full h-12 grid-song grid-rows-2">
+            <img
+              src="./images/linkin_park_in_the_end.jpeg"
+              alt="Linkin Park - In the end"
+              class="rounded-full w-[40px] h-[40px]"
+            />
+            <h2 class="font-gabarito font-bold grid justify-start pl-3">
+              In the end
+            </h2>
+            <h3
+              class="grid col-start-2 leading-4 row-start-2 justify-start pl-3"
+            >
+              Linkin Park
+            </h3>
+            <button class="grid col-start-3">
+              <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12ZM12 6.25C12.4142 6.25 12.75 6.58579 12.75 7V12.1893L14.4697 10.4697C14.7626 10.1768 15.2374 10.1768 15.5303 10.4697C15.8232 10.7626 15.8232 11.2374 15.5303 11.5303L12.5303 14.5303C12.3897 14.671 12.1989 14.75 12 14.75C11.8011 14.75 11.6103 14.671 11.4697 14.5303L8.46967 11.5303C8.17678 11.2374 8.17678 10.7626 8.46967 10.4697C8.76256 10.1768 9.23744 10.1768 9.53033 10.4697L11.25 12.1893V7C11.25 6.58579 11.5858 6.25 12 6.25ZM8 16.25C7.58579 16.25 7.25 16.5858 7.25 17C7.25 17.4142 7.58579 17.75 8 17.75H16C16.4142 17.75 16.75 17.4142 16.75 17C16.75 16.5858 16.4142 16.25 16 16.25H8Z"
+                  fill="#1C274C"
+                />
+              </svg>
+            </button>
+          </div>
+        </aside>
+      </section>
+      <section class="flex w-full">
+        <aside class="flex flex-auto flex-col" style="width: 10%">
+          <button class="flex w-[40px]">
+            <svg
+              fill="#000000"
+              height="40px"
+              width="40px"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="-143 145 512 512"
+            >
+              <path
+                d="M113,145c-141.4,0-256,114.6-256,256s114.6,256,256,256s256-114.6,256-256S254.4,145,113,145z M169.5,357.6l-2.9,38.3h-39.3
+	v133H77.7v-133H51.2v-38.3h26.5v-25.7c0-11.3,0.3-28.8,8.5-39.7c8.7-11.5,20.6-19.3,41.1-19.3c33.4,0,47.4,4.8,47.4,4.8l-6.6,39.2
+	c0,0-11-3.2-21.3-3.2c-10.3,0-19.5,3.7-19.5,14v29.9H169.5z"
+                fill="#1134cb"
+              />
+            </svg>
+          </button>
+          <button class="flex w-[40px]">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              width="40px"
+              height="40px"
+              style="border-radius: 40px; background: #b9b9b9"
+            >
+              <g>
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                ></path>
+              </g>
+            </svg>
+          </button>
+          <button class="flex w-[40px]">
+            <svg
+              width="40px"
+              height="40px"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="2"
+                y="2"
+                width="28"
+                height="28"
+                rx="6"
+                fill="url(#paint0_radial_87_7153)"
+              />
+              <rect
+                x="2"
+                y="2"
+                width="28"
+                height="28"
+                rx="6"
+                fill="url(#paint1_radial_87_7153)"
+              />
+              <rect
+                x="2"
+                y="2"
+                width="28"
+                height="28"
+                rx="6"
+                fill="url(#paint2_radial_87_7153)"
+              />
+              <path
+                d="M23 10.5C23 11.3284 22.3284 12 21.5 12C20.6716 12 20 11.3284 20 10.5C20 9.67157 20.6716 9 21.5 9C22.3284 9 23 9.67157 23 10.5Z"
+                fill="white"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21ZM16 19C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19Z"
+                fill="white"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M6 15.6C6 12.2397 6 10.5595 6.65396 9.27606C7.2292 8.14708 8.14708 7.2292 9.27606 6.65396C10.5595 6 12.2397 6 15.6 6H16.4C19.7603 6 21.4405 6 22.7239 6.65396C23.8529 7.2292 24.7708 8.14708 25.346 9.27606C26 10.5595 26 12.2397 26 15.6V16.4C26 19.7603 26 21.4405 25.346 22.7239C24.7708 23.8529 23.8529 24.7708 22.7239 25.346C21.4405 26 19.7603 26 16.4 26H15.6C12.2397 26 10.5595 26 9.27606 25.346C8.14708 24.7708 7.2292 23.8529 6.65396 22.7239C6 21.4405 6 19.7603 6 16.4V15.6ZM15.6 8H16.4C18.1132 8 19.2777 8.00156 20.1779 8.0751C21.0548 8.14674 21.5032 8.27659 21.816 8.43597C22.5686 8.81947 23.1805 9.43139 23.564 10.184C23.7234 10.4968 23.8533 10.9452 23.9249 11.8221C23.9984 12.7223 24 13.8868 24 15.6V16.4C24 18.1132 23.9984 19.2777 23.9249 20.1779C23.8533 21.0548 23.7234 21.5032 23.564 21.816C23.1805 22.5686 22.5686 23.1805 21.816 23.564C21.5032 23.7234 21.0548 23.8533 20.1779 23.9249C19.2777 23.9984 18.1132 24 16.4 24H15.6C13.8868 24 12.7223 23.9984 11.8221 23.9249C10.9452 23.8533 10.4968 23.7234 10.184 23.564C9.43139 23.1805 8.81947 22.5686 8.43597 21.816C8.27659 21.5032 8.14674 21.0548 8.0751 20.1779C8.00156 19.2777 8 18.1132 8 16.4V15.6C8 13.8868 8.00156 12.7223 8.0751 11.8221C8.14674 10.9452 8.27659 10.4968 8.43597 10.184C8.81947 9.43139 9.43139 8.81947 10.184 8.43597C10.4968 8.27659 10.9452 8.14674 11.8221 8.0751C12.7223 8.00156 13.8868 8 15.6 8Z"
+                fill="white"
+              />
+              <defs>
+                <radialGradient
+                  id="paint0_radial_87_7153"
+                  cx="0"
+                  cy="0"
+                  r="1"
+                  gradientUnits="userSpaceOnUse"
+                  gradientTransform="translate(12 23) rotate(-55.3758) scale(25.5196)"
+                >
+                  <stop stop-color="#B13589" />
+                  <stop offset="0.79309" stop-color="#C62F94" />
+                  <stop offset="1" stop-color="#8A3AC8" />
+                </radialGradient>
+                <radialGradient
+                  id="paint1_radial_87_7153"
+                  cx="0"
+                  cy="0"
+                  r="1"
+                  gradientUnits="userSpaceOnUse"
+                  gradientTransform="translate(11 31) rotate(-65.1363) scale(22.5942)"
+                >
+                  <stop stop-color="#E0E8B7" />
+                  <stop offset="0.444662" stop-color="#FB8A2E" />
+                  <stop offset="0.71474" stop-color="#E2425C" />
+                  <stop offset="1" stop-color="#E2425C" stop-opacity="0" />
+                </radialGradient>
+                <radialGradient
+                  id="paint2_radial_87_7153"
+                  cx="0"
+                  cy="0"
+                  r="1"
+                  gradientUnits="userSpaceOnUse"
+                  gradientTransform="translate(0.500002 3) rotate(-8.1301) scale(38.8909 8.31836)"
+                >
+                  <stop offset="0.156701" stop-color="#406ADC" />
+                  <stop offset="0.467799" stop-color="#6A45BE" />
+                  <stop offset="1" stop-color="#6A45BE" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+            </svg>
+          </button>
+          <button class="flex w-[40px]">
+            <svg
+              width="40px"
+              height="40px"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M16 31C23.732 31 30 24.732 30 17C30 9.26801 23.732 3 16 3C8.26801 3 2 9.26801 2 17C2 19.5109 2.661 21.8674 3.81847 23.905L2 31L9.31486 29.3038C11.3014 30.3854 13.5789 31 16 31ZM16 28.8462C22.5425 28.8462 27.8462 23.5425 27.8462 17C27.8462 10.4576 22.5425 5.15385 16 5.15385C9.45755 5.15385 4.15385 10.4576 4.15385 17C4.15385 19.5261 4.9445 21.8675 6.29184 23.7902L5.23077 27.7692L9.27993 26.7569C11.1894 28.0746 13.5046 28.8462 16 28.8462Z"
+                fill="#BFC8D0"
+              />
+              <path
+                d="M28 16C28 22.6274 22.6274 28 16 28C13.4722 28 11.1269 27.2184 9.19266 25.8837L5.09091 26.9091L6.16576 22.8784C4.80092 20.9307 4 18.5589 4 16C4 9.37258 9.37258 4 16 4C22.6274 4 28 9.37258 28 16Z"
+                fill="url(#paint0_linear_87_7264)"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M16 30C23.732 30 30 23.732 30 16C30 8.26801 23.732 2 16 2C8.26801 2 2 8.26801 2 16C2 18.5109 2.661 20.8674 3.81847 22.905L2 30L9.31486 28.3038C11.3014 29.3854 13.5789 30 16 30ZM16 27.8462C22.5425 27.8462 27.8462 22.5425 27.8462 16C27.8462 9.45755 22.5425 4.15385 16 4.15385C9.45755 4.15385 4.15385 9.45755 4.15385 16C4.15385 18.5261 4.9445 20.8675 6.29184 22.7902L5.23077 26.7692L9.27993 25.7569C11.1894 27.0746 13.5046 27.8462 16 27.8462Z"
+                fill="white"
+              />
+              <path
+                d="M12.5 9.49989C12.1672 8.83131 11.6565 8.8905 11.1407 8.8905C10.2188 8.8905 8.78125 9.99478 8.78125 12.05C8.78125 13.7343 9.52345 15.578 12.0244 18.3361C14.438 20.9979 17.6094 22.3748 20.2422 22.3279C22.875 22.2811 23.4167 20.0154 23.4167 19.2503C23.4167 18.9112 23.2062 18.742 23.0613 18.696C22.1641 18.2654 20.5093 17.4631 20.1328 17.3124C19.7563 17.1617 19.5597 17.3656 19.4375 17.4765C19.0961 17.8018 18.4193 18.7608 18.1875 18.9765C17.9558 19.1922 17.6103 19.083 17.4665 19.0015C16.9374 18.7892 15.5029 18.1511 14.3595 17.0426C12.9453 15.6718 12.8623 15.2001 12.5959 14.7803C12.3828 14.4444 12.5392 14.2384 12.6172 14.1483C12.9219 13.7968 13.3426 13.254 13.5313 12.9843C13.7199 12.7145 13.5702 12.305 13.4803 12.05C13.0938 10.953 12.7663 10.0347 12.5 9.49989Z"
+                fill="white"
+              />
+              <defs>
+                <linearGradient
+                  id="paint0_linear_87_7264"
+                  x1="26.5"
+                  y1="7"
+                  x2="4"
+                  y2="28"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stop-color="#5BD066" />
+                  <stop offset="1" stop-color="#27B43E" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </button>
+        </aside>
+        <article
+          class="flex flex-auto flex-row h-auto gap-5 flex-wrap"
+          style="width: 90%"
+        >
+          <div
+            class="grid grid-rows-4 grid-cols-1 h-60 grid-card-width rounded-3xl"
+          >
+            <div class="grid justify-center self-center">
+              <img
+                src="./images/this_is_dread_mar_i.jpeg"
+                alt="singer"
+                class="w-[45px] h-[40px] rounded-full"
+              />
+            </div>
+            <div class="grid justify-center self-center">
+              <h3
+                class="w-full mt-4 text-center font-bold text-xl font-lexend-deca"
+              >
+                This is Dread Mar I
+              </h3>
+              <p class="w-full text-center text-sm font-gabarito">
+                Dread Mar I, The essential tracks
+              </p>
+            </div>
+            <div class="grid justify-center self-center">
+              <div class="flex flex-col h-8">
+                <div class="music_wave">
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                  <div class="wave"></div>
+                </div>
+              </div>
+            </div>
+            <div class="grid w-full max-w-36 m-auto grid-cols-3 grid-flow-row">
+              <div class="grid col-start-1 self-start w-10">
+                <button class="grid self-center">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="grid col-start-2 self-center w-5/6">
+                <button class="w-10 btn-play" style="width: 40px; height: 40px">
+                  <svg
+                    width="40px"
+                    height="40px"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g fill="none" fill-rule="evenodd">
+                      <path
+                        fill="#FFFFFF"
+                        d="M307.2 307.2h409.6v409.6H307.2z"
+                      />
+                    </g>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="grid col-start-3 self-start w-10">
+                <button class="grid w-full">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                    style="transform: rotate(180deg)"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="grid grid-rows-4 grid-cols-1 h-60 grid-card-width rounded-3xl"
+          >
+            <div class="grid justify-center self-center">
+              <img
+                src="./images/green_valley.jpg"
+                alt="This is Green Valley"
+                class="w-[45px] h-[40px] rounded-full"
+              />
+            </div>
+            <div class="grid justify-center self-center">
+              <h3
+                class="w-full mt-4 text-center font-bold text-xl font-lexend-deca"
+              >
+                This is Green Valley
+              </h3>
+              <p class="w-full text-center text-sm font-gabarito">
+                The essential tracks of Green Valley
+              </p>
+            </div>
+            <div class="grid justify-center self-center">
+              <div class="flex flex-col h-8"></div>
+            </div>
+            <div class="grid w-full max-w-36 m-auto grid-cols-3 grid-flow-row">
+              <div class="grid col-start-1 self-start w-10">
+                <button class="grid self-center">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="grid col-start-2 self-center w-5/6">
+                <button class="w-10 btn-play" style="width: 40px; height: 40px">
+                  <svg
+                    width="40px"
+                    height="40px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="p-2"
+                  >
+                    <path
+                      d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z"
+                      fill="#FFFFFF"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="grid col-start-3 self-start w-10">
+                <button class="grid w-full">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                    style="transform: rotate(180deg)"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="grid grid-rows-4 grid-cols-1 h-60 grid-card-width rounded-3xl"
+          >
+            <div class="grid justify-center self-center">
+              <img
+                src="./images/this_is_soja.jpeg"
+                alt="SOJA - This is SOJA"
+                class="w-[45px] h-[40px] rounded-full"
+              />
+            </div>
+            <div class="grid justify-center self-center">
+              <h3 class="w-full text-center font-bold text-xl font-lexend-deca">
+                This is SOJA
+              </h3>
+              <p class="w-full text-center text-sm font-gabarito">
+                Essential tracks of SOJA
+              </p>
+            </div>
+            <div class="grid justify-center self-center">
+              <div class="flex flex-col h-8"></div>
+            </div>
+            <div class="grid w-full max-w-36 m-auto grid-cols-3 grid-flow-row">
+              <div class="grid col-start-1 self-start w-10">
+                <button class="grid self-center">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="grid col-start-2 self-center w-5/6">
+                <button class="w-10 btn-play" style="width: 40px; height: 40px">
+                  <svg
+                    width="40px"
+                    height="40px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="p-2"
+                  >
+                    <path
+                      d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z"
+                      fill="#FFFFFF"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="grid col-start-3 self-start w-10">
+                <button class="grid w-full">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                    style="transform: rotate(180deg)"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="grid grid-rows-4 grid-cols-1 h-60 grid-card-width rounded-3xl"
+          >
+            <div class="grid justify-center self-center">
+              <img
+                src="./images/this_is_iron_maiden.jpg"
+                alt="This is Iron Maiden"
+                class="w-[45px] h-[40px] rounded-full"
+              />
+            </div>
+            <div class="grid justify-center self-center">
+              <h3 class="w-full text-center font-bold text-xl font-lexend-deca">
+                This is Iron Maiden
+              </h3>
+              <p class="w-full text-center text-sm font-gabarito">
+                Essential tracks of Iron Maiden
+              </p>
+            </div>
+            <div class="grid justify-center self-center">
+              <div class="flex flex-col h-8"></div>
+            </div>
+            <div class="grid w-full max-w-36 m-auto grid-cols-3 grid-flow-row">
+              <div class="grid col-start-1 self-start w-10">
+                <button class="grid self-center">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="grid col-start-2 self-center w-5/6">
+                <button class="w-10 btn-play" style="width: 40px; height: 40px">
+                  <svg
+                    width="40px"
+                    height="40px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="p-2"
+                  >
+                    <path
+                      d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z"
+                      fill="#FFFFFF"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="grid col-start-3 self-start w-10">
+                <button class="grid w-full">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                    style="transform: rotate(180deg)"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="grid grid-rows-4 grid-cols-1 h-60 grid-card-width rounded-3xl"
+          >
+            <div class="grid justify-center self-center">
+              <img
+                src="./images/singer-6601602_640.jpg"
+                alt="singer"
+                class="w-[45px] h-[40px] rounded-full"
+              />
+            </div>
+            <div class="grid justify-center self-center">
+              <h3 class="w-full text-center font-bold text-xl font-lexend-deca">
+                Intenttions
+              </h3>
+              <p class="w-full text-center text-sm font-gabarito">
+                Reggea Roots playlist
+              </p>
+            </div>
+            <div class="grid justify-center self-center">
+              <div class="flex flex-col h-8"></div>
+            </div>
+            <div class="grid w-full max-w-36 m-auto grid-cols-3 grid-flow-row">
+              <div class="grid col-start-1 self-start w-10">
+                <button class="grid self-center">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="grid col-start-2 self-center w-5/6">
+                <button class="w-10 btn-play" style="width: 40px; height: 40px">
+                  <svg
+                    width="40px"
+                    height="40px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="p-2"
+                  >
+                    <path
+                      d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z"
+                      fill="#FFFFFF"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="grid col-start-3 self-start w-10">
+                <button class="grid w-full">
+                  <svg
+                    fill="#e36154"
+                    height="40px"
+                    width="40px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 512 512"
+                    enable-background="new 0 0 512 512"
+                    xml:space="preserve"
+                    style="transform: rotate(180deg)"
+                  >
+                    <path
+                      d="M472.8,90.1L298.6,192.5v-73.9c0-28.4-17.6-41.2-39.2-28.5l-152.8,89.8v-52c0-23.6-19.1-42.7-42.7-42.7H42.7
+	C19.1,85.3,0,104.4,0,128V384c0,23.5,19.1,42.7,42.7,42.7H64c23.5,0,42.7-19.1,42.7-42.7v-51.9l152.8,89.8
+	c21.5,12.7,39.2-0.2,39.2-28.5v-74l174.2,102.5c21.5,12.7,39.2-0.2,39.2-28.5V118.6C512,90.2,494.4,77.4,472.8,90.1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

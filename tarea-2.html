@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS3 Grid - Tarea 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/css">
+      .grid-20px {
+        grid-template: repeat(3, minmax(70px, 80px)) / repeat(
+            3,
+            minmax(70px, 80px)
+          );
+      }
+    </style>
+  </head>
+  <body>
+    <main class="w-full h-screen">
+      <h1>Justify Evenly and Content Evenly</h1>
+      <article
+        class="grid gap-1 w-4/5 h-5/6 border-4 border-orange-300 grid-20px justify-evenly content-evenly"
+      >
+        <div class="bg-orange-400 grid text-white">1</div>
+        <div class="bg-orange-400 grid text-white">2</div>
+        <div class="bg-orange-400 grid text-white">3</div>
+        <div class="bg-orange-400 grid text-white">4</div>
+        <div class="bg-orange-400 grid text-white">5</div>
+        <div class="bg-orange-400 grid text-white">6</div>
+        <div class="bg-orange-400 grid text-white">7</div>
+        <div class="bg-orange-400 grid text-white">8</div>
+        <div class="bg-orange-400 grid text-white">9</div>
+      </article>
+      <h1>Justify Around and Content Around</h1>
+      <article
+        class="grid gap-1 w-4/5 h-5/6 border-4 border-orange-300 grid-20px justify-around content-around"
+      >
+        <div class="bg-red-600 grid text-white">1</div>
+        <div class="bg-red-600 grid text-white">2</div>
+        <div class="bg-red-600 grid text-white">3</div>
+        <div class="bg-red-600 grid text-white">4</div>
+        <div class="bg-red-600 grid text-white">5</div>
+        <div class="bg-red-600 grid text-white">6</div>
+        <div class="bg-red-600 grid text-white">7</div>
+        <div class="bg-red-600 grid text-white">8</div>
+        <div class="bg-red-600 grid text-white">9</div>
+      </article>
+      <h1>Justify Between and Content Between</h1>
+      <article
+        class="grid gap-1 w-4/5 h-5/6 border-4 border-orange-300 grid-20px justify-between content-between"
+      >
+        <div class="bg-red-400 grid text-white">1</div>
+        <div class="bg-red-400 grid text-white">2</div>
+        <div class="bg-red-400 grid text-white">3</div>
+        <div class="bg-red-400 grid text-white">4</div>
+        <div class="bg-red-400 grid text-white">5</div>
+        <div class="bg-red-400 grid text-white">6</div>
+        <div class="bg-red-400 grid text-white">7</div>
+        <div class="bg-red-400 grid text-white">8</div>
+        <div class="bg-red-400 grid text-white">9</div>
+      </article>
+    </main>
+  </body>
+</html>

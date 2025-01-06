@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Grid Overlap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/css" media="all">
+      .triangle {
+        clip-path: polygon(0% 0%, 0% 100%, 100% 0%);
+      }
+      .triangle-2 {
+        clip-path: polygon(30% 15%, 5% 90%, 60% 90%);
+        transform: translate(23%, 35%);
+      }
+      .mask {
+        -webkit-mask-image: url("./images/shape.svg");
+        mask-image: url("./images/shape.svg");
+        mask-repeat: no-repeat;
+      }
+      .mask-shadow {
+        -webkit-mask-image: url("./images/shadow-shape-2.svg");
+        mask-image: url("./images/shadow-shape-2.svg");
+        mask-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body class="w-full h-screen overflow-x-hidden">
+    <article
+      class="overflow-x-hidden grid grid-cols-6 grid-rows-6 w-full bg-white h-full relative bg-[#fae1be]"
+    >
+      <div
+        class="mask overflow-x-hidden grid row-start-1 row-end-[-1] col-start-1 col-end-[-1]"
+      >
+        <div
+          class="bg-gradient-to-r from-[#aa1021] via-[#a62c39] to-[#a1303c] w-full h-full"
+        ></div>
+      </div>
+      <div
+        class="mask-shadow grid row-start-1 row-end-[-1] col-start-1 col-end-[-1]"
+      >
+        <div
+          class="bg-gradient-to-r from-[#dfdede] via-[#d5d5d5] to-[#ffffff] w-full h-full"
+        ></div>
+      </div>
+      <div class="grid row-start-3 col-start-3 col-end-[-1]">
+        <h1 class="text-5xl font-bold z-50">Discover our services</h1>
+      </div>
+      <div
+        class="grid row-start-2 row-span-2 col-span-2 col-start-5 relative top-[-35%] left-[35%] bg-gradient-to-r from-[#aa1021] via-[#a62c39] to-[#a1303c] rectangle w-full h-full"
+      ></div>
+      <div
+        class="grid row-start-2 row-span-2 col-span-2 col-start-5 bg-gradient-to-r from-[#dfdede] via-[#d5d5d5] to-[#ffffff] rectangle-2 w-full h-full"
+      ></div>
+    </article>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abstract Background</title>
+    <style type="text/css" media="all">
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap");
+
+      :root {
+        --blue: #81ccf1;
+        --yellow: #efc66a;
+        --pink: #d8a6cb;
+        --dark-pink: #c59ece;
+        --purple: #9996cb;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-image: linear-gradient(
+          to top,
+          #9996cb,
+          #ab99cc,
+          #bb9dcd,
+          #caa1cc,
+          #d8a6cb
+        );
+        margin: 0;
+        height: 100vh;
+      }
+
+      .container {
+        display: grid;
+        grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+        height: 100vh;
+      }
+      .item-1 {
+        background: var(--yellow);
+        grid-column: 1/2;
+        grid-row: 5/10;
+      }
+      .item-2 {
+        background: var(--blue);
+        grid-column: 1/4;
+        grid-row: 7/9;
+        opacity: 50%;
+      }
+      .item-3 {
+        background: hotpink;
+        grid-column: 5/8;
+        grid-row: 6/11;
+      }
+      .item-4 {
+        border: 4px solid #ffad69;
+        grid-column: 6/10;
+        grid-row: 3/8;
+      }
+      .item-5 {
+        border: 7px solid #e11f57;
+        grid-column: 7/11;
+        grid-row: 2/10;
+      }
+      .item-6 {
+        grid-column: 6/9;
+        grid-row: 3/5;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+      }
+      .item-6 h1 {
+        font-size: 40px;
+      }
+      .item-7 {
+        background: pink;
+        grid-column: 3/4;
+        grid-row: 3/4;
+      }
+      .item-8 {
+        font-size: 20px;
+        display: grid;
+        grid-column-start: 4;
+        grid-row: 2/4;
+        transform: rotate(180deg);
+        writing-mode: vertical-lr;
+        justify-items: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item-1"></div>
+      <div class="item-2"></div>
+      <div class="item-3"></div>
+      <div class="item-4"></div>
+      <div class="item-5"></div>
+      <div class="item-6">
+        <h1>CSS3 Grid</h1>
+      </div>
+      <div class="item-7"></div>
+      <div class="item-8">
+        <p>Teffcode</p>
+      </div>
+    </div>
+  </body>
+</html>
